@@ -135,12 +135,12 @@ function PKMenu()
 
 	local physics_checkbox = vgui.Create("DCheckBoxLabel")
 	physics_checkbox:SetParent(settingsscrollpanel)
-	physics_checkbox:SetPos(25, 50)			
+	physics_checkbox:SetPos(25, 50)
 	physics_checkbox:SetText("Use lerp command (more responsive props)")
-	physics_checkbox:SetValue(pk_ms_settings_table.NoLerp)
+	physics_checkbox:SetValue(PK_GetConfig("UseLerpCommand"))
 	physics_checkbox:SizeToContents()
 	function physics_checkbox:OnChange(val)
-		RunConsoleCommand("pk_cl_physics")
+		PK_SetConfig("UseLerpCommand", val)
 	end
 
 	local visuals_checkbox = vgui.Create("DCheckBoxLabel")
@@ -158,10 +158,10 @@ function PKMenu()
 	rooftiles_checkbox:SetPos(25, 100)	
 	--rooftiles_checkbox:Toggle()
 	rooftiles_checkbox:SetText("Enable rooftiles in skybox")
-	rooftiles_checkbox:SetValue(pk_ms_settings_table.RoofTiles)
+	rooftiles_checkbox:SetValue(PK_GetConfig("RoofTiles"))
 	rooftiles_checkbox:SizeToContents()
 	function rooftiles_checkbox:OnChange(val)
-		RunConsoleCommand("pk_rooftiles")
+		PK_SetConfig("RoofTiles", val)
 	end
 
 	local removeskybox_checkbox = vgui.Create("DCheckBoxLabel")
@@ -169,10 +169,10 @@ function PKMenu()
 	removeskybox_checkbox:SetPos(25, 125)
 	--removeskybox_checkbox:Toggle()
 	removeskybox_checkbox:SetText("Replace skybox with grey")
-	removeskybox_checkbox:SetValue(pk_ms_settings_table.RemoveSkybox)
+	removeskybox_checkbox:SetValue(PK_GetConfig("RemoveSkybox"))
 	removeskybox_checkbox:SizeToContents()
 	function removeskybox_checkbox:OnChange(val)
-		RunConsoleCommand("pk_removeskybox")
+		PK_SetConfig("RemoveSkybox", val)
 	end
 
 	local vertbeam_checkbox = vgui.Create("DCheckBoxLabel")
@@ -185,7 +185,116 @@ function PKMenu()
 	function vertbeam_checkbox:OnChange(val)
 		RunConsoleCommand("pk_vertbeam")
 	end
+
+	local usecustomfov_checkbox = vgui.Create("DCheckBoxLabel")
+	usecustomfov_checkbox:SetParent(settingsscrollpanel)
+	usecustomfov_checkbox:SetPos(25, 175)
+	--usecustomfov_checkbox:Toggle()
+	usecustomfov_checkbox:SetText("Use Custom FOV")
+	usecustomfov_checkbox:SetValue(PK_GetConfig("UseCustomFOV"))
+	usecustomfov_checkbox:SizeToContents()
+	function usecustomfov_checkbox:OnChange(val)
+		PK_SetConfig("UseCustomFOV", val)
+	end
+
+	local customfov_numslider = vgui.Create("DNumSlider", settingsscrollpanel)
+	customfov_numslider:SetPos(25, 200)
+	customfov_numslider:SetText("Custom FOV")
+	customfov_numslider:SetMin(40)
+	customfov_numslider:SetMax(170)
+	customfov_numslider:SetDecimals(0)
+	if PK_GetConfig("CustomFOV") == nil then
+		PK_SetConfig("CustomFOV", 100)
+	end
+	customfov_numslider:SetDefaultValue(PK_GetConfig("CustomFOV"))
+	customfov_numslider:ResetToDefaultValue()
+	customfov_numslider:SetSize(400, 15)
+	function customfov_numslider:OnValueChanged(val)
+		PK_SetConfig("CustomFOV", val)
+		PK_SetConfig("UseCustomFOV", PK_GetConfig("UseCustomFOV"))
+	end
+
+	local usecustomviewmodeloffset_checkbox = vgui.Create("DCheckBoxLabel")
+	usecustomviewmodeloffset_checkbox:SetParent(settingsscrollpanel)
+	usecustomviewmodeloffset_checkbox:SetPos(25, 225)
+	--usecustomviewmodeloffset_checkbox:Toggle()
+	usecustomviewmodeloffset_checkbox:SetText("Use Custom Viewmodel Offset")
+	usecustomviewmodeloffset_checkbox:SetValue(PK_GetConfig("UseCustomViewmodelOffset"))
+	usecustomviewmodeloffset_checkbox:SizeToContents()
+	function usecustomviewmodeloffset_checkbox:OnChange(val)
+		PK_SetConfig("UseCustomViewmodelOffset", val)
+	end
+
+	local customviewmodeloffsetx_numslider = vgui.Create("DNumSlider", settingsscrollpanel)
+	customviewmodeloffsetx_numslider:SetPos(25, 250)
+	customviewmodeloffsetx_numslider:SetText("Custom Viewmodel Offset X")
+	customviewmodeloffsetx_numslider:SetMin(-100)
+	customviewmodeloffsetx_numslider:SetMax(100)
+	customviewmodeloffsetx_numslider:SetDecimals(0)
+	if PK_GetConfig("CustomViewmodelOffset") == nil then
+		PK_SetConfig("CustomViewmodelOffset", Vector(0,0,0))
+	end
+	customviewmodeloffsetx_numslider:SetDefaultValue(PK_GetConfig("CustomViewmodelOffset").x)
+	customviewmodeloffsetx_numslider:ResetToDefaultValue()
+	customviewmodeloffsetx_numslider:SetSize(400, 15)
+	function customviewmodeloffsetx_numslider:OnValueChanged(val)
+		curr = PK_GetConfig("CustomViewmodelOffset")
+		PK_SetConfig("CustomViewmodelOffset", Vector(val, curr.y, curr.z))
+		PK_SetConfig("CustomViewmodelOffset", PK_GetConfig("CustomViewmodelOffset"))
+	end
+
+	local customviewmodeloffsety_numslider = vgui.Create("DNumSlider", settingsscrollpanel)
+	customviewmodeloffsety_numslider:SetPos(25, 275)
+	customviewmodeloffsety_numslider:SetText("Custom Viewmodel Offset Y")
+	customviewmodeloffsety_numslider:SetMin(-100)
+	customviewmodeloffsety_numslider:SetMax(100)
+	customviewmodeloffsety_numslider:SetDecimals(0)
+	if PK_GetConfig("CustomViewmodelOffset") == nil then
+		PK_SetConfig("CustomViewmodelOffset", Vector(0,0,0))
+	end
+	customviewmodeloffsety_numslider:SetDefaultValue(PK_GetConfig("CustomViewmodelOffset").y)
+	customviewmodeloffsety_numslider:ResetToDefaultValue()
+	customviewmodeloffsety_numslider:SetSize(400, 15)
+	function customviewmodeloffsety_numslider:OnValueChanged(val)
+		curr = PK_GetConfig("CustomViewmodelOffset")
+		PK_SetConfig("CustomViewmodelOffset", Vector(curr.x, val, curr.z))
+		PK_SetConfig("CustomViewmodelOffset", PK_GetConfig("CustomViewmodelOffset"))
+	end
+
+	local customviewmodeloffsetz_numslider = vgui.Create("DNumSlider", settingsscrollpanel)
+	customviewmodeloffsetz_numslider:SetPos(25, 300)
+	customviewmodeloffsetz_numslider:SetText("Custom Viewmodel Offset Z")
+	customviewmodeloffsetz_numslider:SetMin(-100)
+	customviewmodeloffsetz_numslider:SetMax(100)
+	customviewmodeloffsetz_numslider:SetDecimals(0)
+	if PK_GetConfig("CustomViewmodelOffset") == nil then
+		PK_SetConfig("CustomViewmodelOffset", Vector(0,0,0))
+	end
+	customviewmodeloffsetz_numslider:SetDefaultValue(PK_GetConfig("CustomViewmodelOffset").z)
+	customviewmodeloffsetz_numslider:ResetToDefaultValue()
+	customviewmodeloffsetz_numslider:SetSize(400, 15)
+	function customviewmodeloffsetz_numslider:OnValueChanged(val)
+		curr = PK_GetConfig("CustomViewmodelOffset")
+		PK_SetConfig("CustomViewmodelOffset", Vector(curr.x, curr.y, val))
+		PK_SetConfig("CustomViewmodelOffset", PK_GetConfig("CustomViewmodelOffset"))
+	end
+
+	local hideviewmodel_checkbox = vgui.Create("DCheckBoxLabel")
+	hideviewmodel_checkbox:SetParent(settingsscrollpanel)
+	hideviewmodel_checkbox:SetPos(25, 325)
+	--hideviewmodel_checkbox:Toggle()
+	hideviewmodel_checkbox:SetText("Hide viewmodel")
+	hideviewmodel_checkbox:SetValue(PK_GetConfig("HideViewmodel"))
+	hideviewmodel_checkbox:SizeToContents()
+	function hideviewmodel_checkbox:OnChange(val)
+		PK_SetConfig("HideViewmodel", val)
+	end
+
 	sheet:AddSheet("Settings", settingssheet, "icon16/cog.png")
+
+
+
+	----------------------------------------------------------------
 
 	local serversettingsscrollpanel = vgui.Create("DScrollPanel", sheet)
 	serversettingsscrollpanel:SetSize(ScrW() - 190, ScrH() - 135)

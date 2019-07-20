@@ -278,7 +278,7 @@ local function roofTiles()
 				render.SuppressEngineLighting(true)
 				render.SetBlend(0.4)
 				render.SetMaterial(RoofMaterial)
-		
+
 				render.DrawQuad(pos1, pos2, pos3, pos4)
 				render.DrawQuad(pos1 + Vector(5000), pos2 + Vector(5000), pos3 + Vector(5000), pos4 + Vector(5000))
 				render.DrawQuad(pos1 - Vector(5000), pos2 - Vector(5000), pos3 - Vector(5000), pos4 - Vector(5000))
@@ -286,11 +286,11 @@ local function roofTiles()
 				render.DrawQuad(pos1 - Vector(5000, -5000), pos2 - Vector(5000, -5000), pos3 - Vector(5000, -5000), pos4 - Vector(5000, -5000))
 				render.DrawQuad(pos1 - Vector(0, -5000), pos2 - Vector(0, -5000), pos3 - Vector(0, -5000), pos4 - Vector(0, -5000))
 				render.DrawQuad(pos1 + Vector(0, -5000), pos2 + Vector(0, -5000), pos3 + Vector(0, -5000), pos4 + Vector(0, -5000))
-		
+
 				render.DrawQuad(pos1 - Vector(-5000, -5000), pos2 - Vector(-5000, -5000), pos3 - Vector(-5000, -5000), pos4 - Vector(-5000, -5000))
 				render.DrawQuad(pos1 - Vector(-5000, 5000), pos2 - Vector(-5000, 5000), pos3 - Vector(-5000, 5000), pos4 - Vector(-5000, 5000))
-		
-		
+
+
 				render.SuppressEngineLighting(false)
 				render.SetBlend(1)
 			cam.End3D()
@@ -305,52 +305,12 @@ end
 concommand.Add("pk_rooftiles", roofTiles)
 
 local function removeSkybox()
-	if !pk_ms_settings_table.RemoveSkybox then
-		hook.Add("PostDrawSkyBox", "removeSkybox", function()
-			render.Clear(50, 50, 50, 255)
-			return true
-		end)
-		hook.Add("PostDraw2DSkyBox", "removeSkybox", function()
-			render.Clear(50, 50, 50, 255)
-			return true
-		end)
-		pk_ms_settings_table.RemoveSkybox = !pk_ms_settings_table.RemoveSkybox
-	else
-		hook.Remove("PostDrawSkyBox", "removeSkybox")
-		hook.Remove("PostDraw2DSkyBox", "removeSkybox")
-		pk_ms_settings_table.RemoveSkybox = !pk_ms_settings_table.RemoveSkybox
-	end
-	pk_save_client_settings()
+	PK_SetConfig("RemoveSkybox", !PK_GetConfig("RemoveSkybox"))
 end
 concommand.Add("pk_removeskybox", removeSkybox)
 
 function UseLerpCommand(ply, cmd, args)
-	if IsValid(args[1]) then
-		if tonumber(args[1]) == 1 then
-			RunConsoleCommand("cl_updaterate", "1000")
-			RunConsoleCommand("cl_interp", "0")
-			RunConsoleCommand("rate", "1048576")
-			pk_ms_settings_table.NoLerp = true
-		elseif tonumber(args[1]) < 1 then
-			RunConsoleCommand("cl_updaterate", "30")
-			RunConsoleCommand("cl_interp", "0.1")
-			RunConsoleCommand("rate", "30000")
-			pk_ms_settings_table.NoLerp = false
-		end
-	else
-		if !pk_ms_settings_table.NoLerp then
-			RunConsoleCommand("cl_updaterate", "1000")
-			RunConsoleCommand("cl_interp", "0")
-			RunConsoleCommand("rate", "1048576")
-			pk_ms_settings_table.NoLerp = true
-		else
-			RunConsoleCommand("cl_updaterate", "30")
-			RunConsoleCommand("cl_interp", "0.1")
-			RunConsoleCommand("rate", "30000")
-			pk_ms_settings_table.NoLerp = false
-		end
-	end
-	pk_save_client_settings()
+	PK_SetConfig("UseLerpCommand", !PK_GetConfig("UseLerpCommand"))
 end
 concommand.Add("pk_cl_physics", UseLerpCommand)
 
