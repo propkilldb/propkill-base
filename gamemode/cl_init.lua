@@ -7,5 +7,6 @@ include("client/derma.lua")
 include("client/base.lua")
 include("client/commands.lua")
 include("shared/entity.lua")
+include("shared/grinding.lua")
 
 hook.Add("PlayerInitialSpawn", "PK_UpdateLeaderboard", PK_UpdateLeaderboard)

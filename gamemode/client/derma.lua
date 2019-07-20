@@ -290,6 +290,17 @@ function PKMenu()
 		PK_SetConfig("HideViewmodel", val)
 	end
 
+	local enablebhop_checkbox = vgui.Create("DCheckBoxLabel")
+	enablebhop_checkbox:SetParent(settingsscrollpanel)
+	enablebhop_checkbox:SetPos(25, 350)
+	--enablebhop_checkbox:Toggle()
+	enablebhop_checkbox:SetText("Enable Bhop")
+	enablebhop_checkbox:SetValue(PK_GetConfig("EnableBhop"))
+	enablebhop_checkbox:SizeToContents()
+	function enablebhop_checkbox:OnChange(val)
+		PK_SetConfig("EnableBhop", val)
+	end
+
 	sheet:AddSheet("Settings", settingssheet, "icon16/cog.png")
 
 
