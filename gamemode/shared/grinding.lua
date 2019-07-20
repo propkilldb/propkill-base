@@ -30,12 +30,12 @@ function HandleGrinding(ply, mv, cmd)
 
 		soundId = nil
 		if (!trLeft.Hit or !trRight.Hit or !trFront.Hit or !trBack.Hit) and ((ply:GetVelocity().x > minSpeed or ply:GetVelocity().x < -minSpeed) or (ply:GetVelocity().y > minSpeed or ply:GetVelocity().y < -minSpeed)) then
-			print("WE TRUE")
 			mv:SetVelocity(Vector(mv:GetVelocity().x * 1.13, mv:GetVelocity().y * 1.13, mv:GetVelocity().z))
-			if trLeft.Hit then mv:SetVelocity(mv:GetVelocity() + Vector(-10,0,0)) end
-			if trRight.Hit then mv:SetVelocity(mv:GetVelocity() + Vector(10,0,0)) end
-			if trFront.Hit then mv:SetVelocity(mv:GetVelocity() + Vector(0,-10,0)) end
-			if trBack.Hit then mv:SetVelocity(mv:GetVelocity() + Vector(0,10,0)) end
+			local pullForce = 5
+			if trLeft.Hit then mv:SetVelocity(mv:GetVelocity() + Vector(-pullForce,0,0)) end
+			if trRight.Hit then mv:SetVelocity(mv:GetVelocity() + Vector(pullForce,0,0)) end
+			if trFront.Hit then mv:SetVelocity(mv:GetVelocity() + Vector(0,-pullForce,0)) end
+			if trBack.Hit then mv:SetVelocity(mv:GetVelocity() + Vector(0,pullForce,0)) end
 			ply:SetCrouchedWalkSpeed(0.2)
 			if CLIENT then
 				ply:SetAnimTime(CurTime() + 1)
@@ -65,7 +65,12 @@ function HandleGrinding(ply, mv, cmd)
 			ply:SetCrouchedWalkSpeed(0.60000002384186)
 		end
 
-		print(trLeft.Hit, trRight.Hit, trFront.Hit, trBack.Hit, ply:GetVelocity(), ply:OnGround())
+		//print(trLeft.Hit, trRight.Hit, trFront.Hit, trBack.Hit, ply:GetVelocity(), ply:OnGround())
+	else
+		timer.Destroy("PK_GrindingSound")
+		hook.Remove("PlayerFootstep", "PK_Grinding")
+		grindSound:Stop()
+		ply:SetCrouchedWalkSpeed(0.60000002384186)
 	end
 end
 
