@@ -1,0 +1,11 @@
+include("shared.lua")
+include("client/hud.lua")
+include("client/hax.lua")
+include("client/scrubkeys.lua")
+include("client/scoreboard.lua")
+include("client/derma.lua")
+include("client/base.lua")
+include("client/commands.lua")
+include("shared/entity.lua")
+
+hook.Add("PlayerInitialSpawn", "PK_UpdateLeaderboard", PK_UpdateLeaderboard)
