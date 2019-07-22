@@ -53,6 +53,7 @@ function GM:PlayerSpawn(ply)
 	if ply:Team() == TEAM_UNASSIGNED then
 		ply:StripWeapons()
 		GAMEMODE:PlayerSpawnAsSpectator(ply)
+		ply:Spectate(OBS_MODE_ROAMING)
 	else
 		ply:UnSpectate()
 	end
