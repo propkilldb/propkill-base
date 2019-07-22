@@ -61,7 +61,9 @@ function HandleGrinding(ply, mv, cmd)
 		else
 			timer.Destroy("PK_GrindingSound")
 			hook.Remove("PlayerFootstep", "PK_Grinding")
-			grindSound:Stop()
+			if IsValid(grindSound) then
+				grindSound:Stop()
+			end
 			ply:SetCrouchedWalkSpeed(0.60000002384186)
 		end
 
@@ -69,7 +71,9 @@ function HandleGrinding(ply, mv, cmd)
 	else
 		timer.Destroy("PK_GrindingSound")
 		hook.Remove("PlayerFootstep", "PK_Grinding")
-		grindSound:Stop()
+		if IsValid(grindSound) then
+			grindSound:Stop()
+		end
 		ply:SetCrouchedWalkSpeed(0.60000002384186)
 	end
 end
