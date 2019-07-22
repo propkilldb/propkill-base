@@ -113,7 +113,6 @@ local function StartPossibleGrind(ply, key)
 
 		if (!trLeft.Hit or !trRight.Hit or !trFront.Hit or !trBack.Hit) and ((ply:GetVelocity().x > minSpeed or ply:GetVelocity().y < -minSpeed) or (ply:GetVelocity().y > minSpeed or ply:GetVelocity().y < -minSpeed))
 		and ply:OnGround() and SERVER then
-			ply:ChatPrint("OLLIE")
 			ply:EmitSound("grinding/ollie.wav")
 		end
 	end
