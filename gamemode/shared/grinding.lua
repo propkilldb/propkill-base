@@ -123,7 +123,9 @@ local function StopGrind(ply, key)
 		timer.Destroy("PK_GrindingSound")
 		ply:StopSound("grinding/grindconcrete01.wav")
 		ducking[ply] = false
-		ply.grindSound:Stop()
+		if IsValid(ply.grindSound) then
+			ply.grindSound:Stop()
+		end
 		ply:SetCrouchedWalkSpeed(0.60000002384186)
 	end
 end
