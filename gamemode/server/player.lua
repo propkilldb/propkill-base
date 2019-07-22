@@ -50,6 +50,13 @@ hook.Add("PlayerLoadout", "PK_PlayerSpawn", PK_PlayerLoadout)
 
 
 function GM:PlayerSpawn(ply)
+	player_manager.OnPlayerSpawn(ply)
+	player_manager.RunClass(ply, "Spawn")
+
+	hook.Call("PlayerLoadout", GAMEMODE, ply)
+	hook.Call("PlayerSetModel", GAMEMODE, ply)
+	ply:SetupHands()
+
 	if ply:Team() == TEAM_UNASSIGNED then
 		ply:StripWeapons()
 		GAMEMODE:PlayerSpawnAsSpectator(ply)
@@ -62,13 +69,6 @@ function GM:PlayerSpawn(ply)
 	ply:SetWalkSpeed(400)
 	ply:SetRunSpeed(400)
 	ply:SetJumpPower(200)
-
-	player_manager.OnPlayerSpawn(ply)
-	player_manager.RunClass(ply, "Spawn")
-
-	hook.Call("PlayerLoadout", GAMEMODE, ply)
-	hook.Call("PlayerSetModel", GAMEMODE, ply)
-	ply:SetupHands()
 end
 
 function GM:OnPlayerChangedTeam(ply, old, new)
