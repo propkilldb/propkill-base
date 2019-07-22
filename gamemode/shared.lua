@@ -21,7 +21,7 @@ baseclass.Set('player_sandbox', base)
 -- fix robottard spectator collisions
 hook.Add("ShouldCollide", "ss_noteamcollide", function(ent,ent2)
 	if ent:IsPlayer() and IsValid(ent) and ent2:IsPlayer() and IsValid(ent2) then
-		if ent2:Team() == TEAM_UNASSIGNED then
+		if ent2:Team() == TEAM_UNASSIGNED or ent:Team() == TEAM_UNASSIGNED then
 			return false
 		elseif ent:Team() == ent2:Team() then
 			return false
