@@ -60,11 +60,13 @@ function GM:PlayerSpawn(ply)
 	ply:EnableCustomCollisions(true);
 
 	if ply:Team() == TEAM_UNASSIGNED then
+		ply:SetCollisionGroup(COLLISION_GROUP_NONE)
 		ply:StripWeapons()
 		GAMEMODE:PlayerSpawnAsSpectator(ply)
 		ply:Spectate(OBS_MODE_ROAMING)
 	else
 		ply:UnSpectate()
+		ply:SetCollisionGroup(COLLISION_GROUP_PLAYER)
 	end
 	ply.temp = 0
 	ply.streak = 0
