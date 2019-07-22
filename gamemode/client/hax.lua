@@ -175,7 +175,7 @@ concommand.Add("pk_visuals", visualstoggle)
 function pk_esp()
 	for k,v in pairs(player.GetAll()) do
 		if v != LocalPlayer() and pk_ms_settings_table.ESP and v:Alive() and v:Team() != TEAM_UNASSIGNED then
-			local pos1 = v:GetBonePosition(v:LookupBone("ValveBiped.Bip01_Head1") or -1) + pk_ms_settings_table.ESPOffset
+			local pos1 = v:GetBonePosition(v:LookupBone("ValveBiped.Bip01_Head1") or -1) + Vector(0,0,15)
 			local pos = pos1:ToScreen()
 			draw.SimpleText(v:Nick(), "stb24", pos.x, pos.y, Color(255,255,255), TEXT_ALIGN_CENTER, TEXT_ALIGN_BOTTOM)
 
