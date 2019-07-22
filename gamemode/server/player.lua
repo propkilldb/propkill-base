@@ -57,6 +57,8 @@ function GM:PlayerSpawn(ply)
 	hook.Call("PlayerSetModel", GAMEMODE, ply)
 	ply:SetupHands()
 
+	ply:EnableCustomCollisions(true);
+
 	if ply:Team() == TEAM_UNASSIGNED then
 		ply:StripWeapons()
 		GAMEMODE:PlayerSpawnAsSpectator(ply)
