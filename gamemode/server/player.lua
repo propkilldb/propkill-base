@@ -57,7 +57,7 @@ function GM:PlayerSpawn(ply)
 	hook.Call("PlayerSetModel", GAMEMODE, ply)
 	ply:SetupHands()
 
-	ply:EnableCustomCollisions(true);
+	ply:SetCustomCollisionCheck(true);
 
 	if ply:Team() == TEAM_UNASSIGNED then
 		ply:SetCollisionGroup(COLLISION_GROUP_NONE)
@@ -115,7 +115,7 @@ end
 function GM:PlayerDisconnected(ply)
 	ChatMsg({Color(120,120,255), ply:Nick(), Color(255,255,255), " has disconnected."})
 	timer.Simple(0.5, GetLeader)
-end 
+end
 
 function GM:PlayerShouldTakeDamage(ply, attacker)
 	if attacker:GetClass() == "trigger_hurt" then
