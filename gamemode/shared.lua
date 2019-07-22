@@ -17,3 +17,16 @@ end
 local base = baseclass.Get('player_sandbox')
 base['FinishMove'] = function() end
 baseclass.Set('player_sandbox', base)
+
+-- fix robottard spectator collisions
+hook.Add("ShouldCollide", "ss_noteamcollide", function(ent,ent2)
+	if ent:IsPlayer() and IsValid(ent) and ent2:IsPlayer() and IsValid(ent2) then
+		if ent2:Team() == TEAM_UNASSIGNED then
+			return false
+		elseif ent:Team() == ent2:Team() then
+			return false
+		else
+			return true
+		end
+	end
+end)
