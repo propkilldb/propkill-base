@@ -47,7 +47,7 @@ local function u()
 	local v = player.GetAll()
 	local v = table.Add(v, ents.FindByClass("prop_physics"))
 	local v = table.Add(v, ents.FindByClass("gmod_button"))
-	return v 
+	return v
 end
 
 local function w()
@@ -60,27 +60,27 @@ hook.Add("Think", "addbuttons", w)
 
 local function ms_onentcreated(entname)
 	local y = entname
-	if pk_ms_settings_table.PropWalls then 
-		if not y.Mat and y:GetClass()=="prop_physics" or y:GetClass()=="gmod_button" then 
+	if pk_ms_settings_table.PropWalls then
+		if not y.Mat and y:GetClass()=="prop_physics" or y:GetClass()=="gmod_button" then
 			y.Mat=y:GetMaterial()
 			y:SetNoDraw(true)
 			y:DrawShadow(false)
-		end 
-	else 
-		if y.Mat and y:GetClass()=="prop_physics" or y:GetClass()=="gmod_button" then 
+		end
+	else
+		if y.Mat and y:GetClass()=="prop_physics" or y:GetClass()=="gmod_button" then
 			local z=y.Mat or ""y:SetNoDraw(false)
 			y:DrawShadow(true)
-			y.Mat=nil 
-		end 
-	end 
+			y.Mat=nil
+		end
+	end
 end
 
 hook.Add("OnEntityCreated", "MSEntityCreated", ms_onentcreated)
 
 local function A()
-	for l,m in pairs(h) do 
+	for l,m in pairs(h) do
 		ms_onentcreated(m)
-	end 
+	end
 end
 
 local function B(C)
@@ -93,10 +93,10 @@ local function ms_prop_screenspace_stuff()
 	cam.IgnoreZ(true)
 	render.MaterialOverride(g)
 	render.SuppressEngineLighting(true)
-	if pk_ms_settings_table.PropWalls and pk_ms_settings_table.PropWallOpacity then 
+	if pk_ms_settings_table.PropWalls and pk_ms_settings_table.PropWallOpacity then
 		render.SetBlend(pk_ms_settings_table.PropWallOpacity/100)
 		for l,m in pairs(h) do
-			if IsValid(m) then 
+			if IsValid(m) then
 				if m:GetClass() == "ctf_flag" then
 					local tc = team.GetColor(m:GetTeam())
 					render.SetColorModulation(tc["r"]/255,tc["g"]/255,tc["b"]/255)
@@ -105,47 +105,47 @@ local function ms_prop_screenspace_stuff()
 				end
 				m:SetNoDraw(true)
 				m:DrawModel()
-			end 
-		end 
+			end
+		end
 	end
 
-	if pk_ms_settings_table.PlayerWalls and pk_ms_settings_table.PlayerOpacity then 
+	if pk_ms_settings_table.PlayerWalls and pk_ms_settings_table.PlayerOpacity then
 		render.SetBlend(pk_ms_settings_table.PlayerOpacity/100)
 		for l,m in pairs(player.GetAll()) do
 			if m:Team() == TEAM_UNASSIGNED then continue end
 			local tc = team.GetColor(m:Team())
 			render.SetColorModulation(tc["r"]/255,tc["g"]/255,tc["b"]/255)
-			if IsValid(m) and m:Alive() and m:GetMoveType()~=0 then 
+			if IsValid(m) and m:Alive() and m:GetMoveType()~=0 then
 				m:DrawModel()
-			end 
-		end 
+			end
+		end
 	end
 
 	cam.IgnoreZ(false)
 
-	if not pk_ms_settings_table.WallsAlwaysSolid then 
-		if pk_ms_settings_table.PlayerWalls then 
+	if not pk_ms_settings_table.WallsAlwaysSolid then
+		if pk_ms_settings_table.PlayerWalls then
 			render.SetBlend(1)
 			render.SetColorModulation(1,1,1)
 			render.MaterialOverride(nil)
-			for l,m in pairs(player.GetAll()) do 
-				if IsValid(m) and m:GetMoveType()~=0 and m:Alive() then 
+			for l,m in pairs(player.GetAll()) do
+				if IsValid(m) and m:GetMoveType()~=0 and m:Alive() then
 					m:DrawModel()
-				end 
-			end 
+				end
+			end
 		end
 
-		if pk_ms_settings_table.PropWalls and pk_ms_settings_table.PropOpacity then 
+		if pk_ms_settings_table.PropWalls and pk_ms_settings_table.PropOpacity then
 			render.MaterialOverride(g)
 			render.SetColorModulation(E[1],E[2],E[3])
 			render.SetBlend(pk_ms_settings_table.PropOpacity/100)
-			for l,m in pairs(h) do 
-				if IsValid(m) then 
+			for l,m in pairs(h) do
+				if IsValid(m) then
 					m:SetNoDraw(true)
 					m:DrawModel()
-				end 
-			end 
-		end 
+				end
+			end
+		end
 	end
 
 	render.MaterialOverride(nil)
@@ -161,7 +161,7 @@ hook.Add("RenderScreenspaceEffects", "MSRender", ms_prop_screenspace_stuff)
 local function visualstoggle()
 	if !pk_ms_settings_table.PropWalls then
 		surface.PlaySound("buttons/button1.wav")
-	else 
+	else
 		surface.PlaySound("buttons/button19.wav")
 	end
 	pk_ms_settings_table.PropWalls = not pk_ms_settings_table.PropWalls
@@ -221,7 +221,7 @@ local function vertBeam()
 					local tracedown = util.TraceLine(t2)
 
 					render.SetMaterial(Material("sprites/tp_beam001"))
-					
+
 					local centre = v:LocalToWorld(v:OBBCenter())
 
 					render.DrawBeam(centre, traceup.HitPos, 10, 0, 0, team.GetColor(v:Team()))
@@ -331,13 +331,10 @@ hook.Add("Think", "PK_Bhop", function()
 			RunConsoleCommand("-jump")
 			return
 		end
-
-		if MS.DisableBhopStop then
-			if(LP:WaterLevel() >0 or LP:GetMoveType() == MOVETYPE_NOCLIP or LP:InVehicle()) then
-				RunConsoleCommand("+jump")
-			else
-				RunConsoleCommand("-jump")
-			end
+		if(LocalPlayer():IsOnGround() or LP:WaterLevel() >0 or LP:GetMoveType() == MOVETYPE_NOCLIP or LP:InVehicle()) then
+			RunConsoleCommand("+jump")
+		else
+			RunConsoleCommand("-jump")
 		end
 	end
 end)

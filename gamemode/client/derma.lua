@@ -1,6 +1,6 @@
 /*------------------------------------------
 					Fonts
-------------------------------------------*/  
+------------------------------------------*/
 surface.CreateFont( "team_font", {
 	font = "Trebuchet24",
 	size = 32,
@@ -93,7 +93,7 @@ function PKMenu()
 	end
 	function mainframe:OnClose()
 		mainframe:Clear()
-		timer.Destroy("PK_Update_Leaderboard_Rows") 
+		timer.Destroy("PK_Update_Leaderboard_Rows")
 		timer.Destroy("PK_Update_Match_History_Rows")
 		mainframe:Remove()
 	end
@@ -155,7 +155,7 @@ function PKMenu()
 
 	local rooftiles_checkbox = vgui.Create("DCheckBoxLabel")
 	rooftiles_checkbox:SetParent(settingsscrollpanel)
-	rooftiles_checkbox:SetPos(25, 100)	
+	rooftiles_checkbox:SetPos(25, 100)
 	--rooftiles_checkbox:Toggle()
 	rooftiles_checkbox:SetText("Enable rooftiles in skybox")
 	rooftiles_checkbox:SetValue(PK_GetConfig("RoofTiles"))
@@ -301,6 +301,17 @@ function PKMenu()
 		PK_SetConfig("EnableBhop", val)
 	end
 
+	local enablebhop_checkbox = vgui.Create("DCheckBoxLabel")
+	enablebhop_checkbox:SetParent(settingsscrollpanel)
+	enablebhop_checkbox:SetPos(25, 375)
+	--enablebhop_checkbox:Toggle()
+	enablebhop_checkbox:SetText("Track Players")
+	enablebhop_checkbox:SetValue(PK_GetConfig("TrackPlayers"))
+	enablebhop_checkbox:SizeToContents()
+	function enablebhop_checkbox:OnChange(val)
+		PK_SetConfig("TrackPlayers", val)
+	end
+
 	sheet:AddSheet("Settings", settingssheet, "icon16/cog.png")
 
 
@@ -321,7 +332,7 @@ function PKMenu()
 
 	local physsettings_checkbox = vgui.Create("DCheckBoxLabel")
 	physsettings_checkbox:SetParent(serversettingsscrollpanel)
-	physsettings_checkbox:SetPos(25, 50)			
+	physsettings_checkbox:SetPos(25, 50)
 	physsettings_checkbox:SetText("Australian physics speeds")
 
 	australianphyssetings = {
@@ -422,7 +433,7 @@ function PKMenu()
 			function row:Paint(w,h)
 				draw.RoundedBox(0, 0, 0, w, h, colour)
 			end
-	
+
 			local ranknum = vgui.Create("DLabel", row)
 			ranknum:SetText("")
 			ranknum:Dock(LEFT)
@@ -430,13 +441,13 @@ function PKMenu()
 			function ranknum:Paint(w,h)
 				draw.SimpleText(v["rank"], "pk_teamfont", w/2, h/2, Color(0,0,0), TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
 			end
-	
+
 			local avatar = vgui.Create("AvatarImage", row)
 			avatar:Dock(LEFT)
 			avatar:DockMargin(12.5,0,12.5,0)
 			avatar:SetSize(25,25)
 			avatar:SetSteamID(util.SteamIDTo64(v["steamid"]), 32)
-	
+
 			local plyname = vgui.Create("DLabel", row)
 			plyname:SetText("")
 			plyname:Dock(LEFT)
@@ -452,7 +463,7 @@ function PKMenu()
 			function plyname:Paint(w,h)
 				draw.SimpleText(actualname, "pk_teamfont", w/2, h/2, Color(0,0,0), TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
 			end
-	
+
 			local totalwins = vgui.Create("DLabel", row)
 			totalwins:SetText("")
 			totalwins:Dock(LEFT)
@@ -460,7 +471,7 @@ function PKMenu()
 			function totalwins:Paint(w,h)
 				draw.SimpleText(v["wins"], "pk_teamfont", w/2, h/2, Color(0,0,0), TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
 			end
-	
+
 			local totallosses = vgui.Create("DLabel", row)
 			totallosses:SetText("")
 			totallosses:Dock(LEFT)
@@ -560,7 +571,7 @@ function PKMenu()
 			opponentselect:AddChoice(v:Nick())
 		end
 	end
-	
+
 	local duelinvitebutton = vgui.Create("DButton", duelpanel)
 	duelinvitebutton:SetText("Send Invite")
 	duelinvitebutton:SetPos(25, 50)
@@ -601,7 +612,7 @@ net.Receive("pk_helpmenu", PKMenu)
 
 local function RealTeams()
 	local count = 0
-	
+
 	for k,v in pairs(team.GetAllTeams()) do
 		if k < 1000 then
 			count = count + 1
@@ -685,7 +696,7 @@ function PK_DuelInviteMenu()
 	end
 	function mainframe:OnClose()
 		mainframe:Clear()
-		timer.Destroy("PK_Update_Leaderboard_Rows") 
+		timer.Destroy("PK_Update_Leaderboard_Rows")
 		mainframe:Remove()
 	end
 	mainframe:MakePopup()
