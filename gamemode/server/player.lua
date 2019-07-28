@@ -10,9 +10,9 @@ end
 
 function GetLeader()
 	local kills = 0
-	for k,v in pairs(player.GetAll()) do 
+	for k,v in pairs(player.GetAll()) do
 		if v.temp >= kills then
-			kills = v.temp 
+			kills = v.temp
 			if kills != 0 then
 				local msg = v:Nick() .. " (" .. tostring(kills) .. ")"
 				SetGlobalString("PK_CurrentLeader", msg)
@@ -61,12 +61,14 @@ function GM:PlayerSpawn(ply)
 
 	if ply:Team() == TEAM_UNASSIGNED then
 		ply:SetCollisionGroup(COLLISION_GROUP_NONE)
+		ply:SetSolid(SOLID_NONE)
 		ply:StripWeapons()
 		GAMEMODE:PlayerSpawnAsSpectator(ply)
 		ply:Spectate(OBS_MODE_ROAMING)
 	else
 		ply:UnSpectate()
 		ply:SetCollisionGroup(COLLISION_GROUP_PLAYER)
+		ply:SetSolid(SOLID_BBOX)
 	end
 	ply.temp = 0
 	ply.streak = 0
@@ -81,7 +83,7 @@ function GM:OnPlayerChangedTeam(ply, old, new)
 end
 
 function GM:PlayerDeath(ply, inflictor, attacker)
-	if (inflictor:GetClass() == "prop_physics") then 
+	if (inflictor:GetClass() == "prop_physics") then
 		local propOwner = inflictor.Owner
 		attacker = propOwner
 
@@ -104,7 +106,7 @@ function GM:PlayerDeath(ply, inflictor, attacker)
 		net.WriteString(inflictor:GetClass())
 		net.WriteEntity(attacker)
 	net.Broadcast()
-	
+
 	GetLeader()
 end
 
@@ -161,7 +163,7 @@ end
 
 function GetNextAlivePlayer( ply )
    local alive = GetAlivePlayers()
-   
+
    if #alive < 1 then return nil end
 
    local prev = nil
