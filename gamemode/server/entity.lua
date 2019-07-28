@@ -52,12 +52,18 @@ end)
 
 hook.Add("PlayerFrozeObject", "PK_Limit_Frozen", function(ply, ent, physobj)
 	if PK_Config.limitfrozenprops then
-		if IsValid(ply.frozenprop) then
-			if ply.frozenprop != ent then
-				ply.frozenprop:Remove()
+		if !ply.frozenprops then ply.frozenprops = {} end
+		for k,prop in pairs(ply.frozenprops) do
+			if IsValid(prop) then
+				continue
+			else
+				table.remove(ply.frozenprops, k)
 			end
 		end
-		ply.frozenprop = ent
+		if #ply.frozenprops >= PK_GetConfig("maxfrozenprops") then
+			ply.frozenprops[1]:Remove()
+		end
+		table.insert(ply.frozenprops, ent)
 	end
 end)
 
