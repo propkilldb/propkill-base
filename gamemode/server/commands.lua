@@ -18,6 +18,7 @@ concommand.Add("rserver", function(ply)
 
 	if ply == NULL then -- ply is NULL when the command is run by the dedicated server
 		RestartServer()
+		return true
 	end
 	if ply:IsSuperAdmin() then
 		RestartServer()
