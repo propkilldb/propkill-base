@@ -83,6 +83,9 @@ function GM:OnPlayerChangedTeam(ply, old, new)
 end
 
 function GM:PlayerDeath(ply, inflictor, attacker)
+	ply:SetCollisionGroup(COLLISION_GROUP_NONE)
+	ply:SetSolid(SOLID_NONE)
+
 	if (inflictor:GetClass() == "prop_physics") then
 		local propOwner = inflictor.Owner
 		attacker = propOwner
