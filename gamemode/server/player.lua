@@ -8,6 +8,19 @@ function GM:PlayerInitialSpawn(ply)
 	ply:Spawn()
 end
 
+local playermeta = FindMetaTable("Player")
+
+// Removes all entities on a player's undo list
+function playermeta:UndoAll()
+	for k,v in pairs(undo.GetTable()[self:UniqueID()] or {}) do
+		for k2,ent in pairs(v.Entities) do
+			if IsValid(ent) then
+				ent:Remove()
+			end
+		end
+	end
+end
+
 function GetLeader()
 	local kills = 0
 	for k,v in pairs(player.GetAll()) do
@@ -75,6 +88,12 @@ function GM:PlayerSpawn(ply)
 	ply:SetWalkSpeed(400)
 	ply:SetRunSpeed(400)
 	ply:SetJumpPower(200)
+
+	// Cleanup a player's props when they spawn
+	if timer.Exists("PK_UndoAll_" .. ply:SteamID64()) then
+		timer.Remove("PK_UndoAll_" .. ply:SteamID64())
+	end
+	ply:UndoAll()
 end
 
 function GM:OnPlayerChangedTeam(ply, old, new)
@@ -110,6 +129,10 @@ function GM:PlayerDeath(ply, inflictor, attacker)
 		net.WriteEntity(attacker)
 	net.Broadcast()
 
+	timer.Create("PK_UndoAll_" .. ply:SteamID64(), 5, 1, function()
+		ply:UndoAll()
+	end)
+
 	GetLeader()
 end
 
@@ -120,6 +143,9 @@ end
 function GM:PlayerDisconnected(ply)
 	ChatMsg({Color(120,120,255), ply:Nick(), Color(255,255,255), " has disconnected."})
 	timer.Simple(0.5, GetLeader)
+
+	// Cleanup a player's props when they disconnect
+	ply:UndoAll()
 end
 
 function GM:PlayerShouldTakeDamage(ply, attacker)

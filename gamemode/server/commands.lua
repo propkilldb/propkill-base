@@ -11,18 +11,9 @@ end
 concommand.Add("pk_team", ChangeTeam)
 
 concommand.Add("rserver", function(ply)
-	local function RestartServer()
-		print("Restarting server...")
-		RunConsoleCommand("changelevel", game.GetMap(), engine.ActiveGamemode())
-	end
-
-	if ply == NULL then -- ply is NULL when the command is run by the dedicated server
-		RestartServer()
-		return true
-	end
-	if ply:IsSuperAdmin() then
-		RestartServer()
-	end
+   if ply == NULL or ply:IsSuperAdmin() then
+      RunConsoleCommand("changelevel", game.GetMap(), engine.ActiveGamemode())
+   end
 end)
 
 function ConfigSet(ply, cmd, args)
